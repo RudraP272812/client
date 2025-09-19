@@ -17,7 +17,6 @@ import { ValidatePhone } from '../../validators/phone.validator';
 export class EmployeeDetails implements OnInit {
 
   employee: InputSignal<Employee> = input<Employee>(EMPLOYEE_DEFAULT);
-  isNew: InputSignal<boolean> = input<boolean>(false);
   saved = output<Employee>();
   closed = output<void>();
   deleted = output<number>();

@@ -69,8 +69,8 @@
       Save
     </button>
     <span style="flex: 1 1 auto"></span>
+    @if (employee().id > 0) {
     <button
-      *ngIf="!isNew()"
       mat-raised-button
       type="button"
       style="color: red"
@@ -78,6 +78,7 @@
     >
       Delete
     </button>
+    }
     <span style="flex: 1 1 auto"></span>
     <button mat-raised-button type="button" style="color: maroon" (click)="closed.emit()">
       Close
