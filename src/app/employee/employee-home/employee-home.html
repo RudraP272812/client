@@ -1,8 +1,17 @@
 <mat-card>
   <mat-card-content>
     @if (hasEmployeeSelected()) {
-    <mat-card-title align="center" style="margin: 1rem">Employee Details</mat-card-title>
-    <app-employee-details [employee]="employeeInDetail()" (saved)="updateEmployee($event)" />
+    <mat-card-title
+      align="center"
+      style="margin: 1rem"
+      >{{ newEmployee() ? `New Employee` : `Employee Details` }}</mat-card-title
+    >
+    <app-employee-details
+      [employee]="employeeInDetail()"
+      (saved)="saveEmployee($event)"
+      (deleted)="deleteEmployee($event)"
+      (closed)="refresh()"
+    />
     } @else {
     <mat-card-title align="center" style="margin: 1rem">Employees</mat-card-title>
     <mat-list dense>
@@ -15,3 +24,8 @@
     }
   </mat-card-content>
 </mat-card>
+@if (!hasEmployeeSelected()) {
+<mat-icon (click)="addNewEmployee()" matTooltip="Add New Employee" class="addicon" color="primary">
+  control_point
+</mat-icon>
+}
