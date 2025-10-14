@@ -1,5 +1,18 @@
 .mat-mdc-row:nth-child(odd) {
+  /* Keep existing styling for row background */
   background-color: white;
+}
+
+/* 1. CENTERS THE HEADER TEXT AND SORT ICON */
+.mat-sort-header-container {
+  justify-content: center;
+}
+
+/* 2. CENTERS THE CONTENT INSIDE THE DATA CELLS */
+/* This is often necessary for Angular Material cells to align content */
+.mat-mdc-cell,
+.mat-mdc-header-cell {
+  justify-content: center;
 }
 
 .material-icons.addicon {
