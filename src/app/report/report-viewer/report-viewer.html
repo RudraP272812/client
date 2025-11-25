@@ -2,8 +2,17 @@
   <mat-card-title style="text-align: center; margin: 1rem">Report Viewer</mat-card-title>
   <mat-card-content>
     <app-employee-dropdown (selected)="employeeSelected($event)" />
-    @if (employeeId() > 0) {
+    @if (employeeId() > 0 ){
     <app-report-dropdown [employeeId]="this.employeeId()" (selected)="reportSelected($event)" />
+    } @if (report().id > 0) {
+    <mat-card-title style="text-align: center; margin: 1rem"
+      >Report # {{ report().id }}</mat-card-title
+    >
+    <mat-card-content style="text-align: center; margin: 1rem">{{
+      report().date.substring(0, 10)
+    }}</mat-card-content>
+    } @if(expensesForReport().length > 0) {
+    <app-report-table [expenses]="this.expensesForReport()"></app-report-table>
     }
   </mat-card-content>
 </mat-card>

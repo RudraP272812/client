@@ -1,0 +1,43 @@
+<table mat-table [dataSource]="reportTable">
+  <tr mat-header-row *matHeaderRowDef="tableColumns; sticky: true"></tr>
+  <tr mat-row *matRowDef="let expense; columns: tableColumns"></tr>
+  <tr mat-footer-row *matFooterRowDef="tableColumns"></tr>
+
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef>
+      <div align="center">Date</div>
+    </th>
+    <td mat-cell *matCellDef="let expense">
+      <div align="center">{{ expense.date.substring(0, 10) }}</div>
+    </td>
+    <td mat-footer-cell *matFooterCellDef></td>
+  </ng-container>
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef>
+      <div align="center">Description</div>
+    </th>
+    <td mat-cell *matCellDef="let expense">
+      <div align="center">{{ expense.description }}</div>
+    </td>
+    <td mat-footer-cell *matFooterCellDef>
+      <div align="right">Total</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="amount">
+    <th mat-header-cell *matHeaderCellDef>
+      <div align="center">Amount</div>
+    </th>
+    <td mat-cell *matCellDef="let expense">
+      <div align="right">
+        {{ expense.amount | currency : '$' }}
+      </div>
+    </td>
+    <td mat-footer-cell *matFooterCellDef>
+      <div align="right">
+        <strong>
+          {{ reportTotal() | currency : '$' }}
+        </strong>
+      </div>
+    </td>
+  </ng-container>
+</table>
