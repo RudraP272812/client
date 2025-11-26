@@ -34,13 +34,14 @@ export class ReportGenerator implements OnInit {
   employees = signal<Employee[]>([]);
   employeeExpenses = signal<Expense[]>([]);
   reportCreatedMessage = signal<String>('');
+  reportCreatedId = signal<number>(0);
 
   tableColumns = ['date', 'description', 'amount'];
   reportTable = new MatTableDataSource<Expense>();
 
   reportForm: FormGroup = new FormGroup({
-    employeeId: new FormControl(0), // Initialize to 0 for better control flow
-    expenseId: new FormControl(0), // Initialize to 0 for better control flow
+    employeeId: new FormControl(0),
+    expenseId: new FormControl(0),
   });
 
   ngOnInit(): void {
@@ -56,10 +57,11 @@ export class ReportGenerator implements OnInit {
   }
 
   onEmployeeSelectionChange(selection: MatSelectChange): void {
-    this.reportForm.get('expenseId')?.setValue(0); // Unselect the expense
-    this.reportTable.data = []; // Clear the table
-    this.employeeExpenses.set([]); // Clear the list of employee expenses
-    this.reportCreatedMessage.set(''); // Clear the report created message
+    this.reportForm.get('expenseId')?.setValue(0);
+    this.reportTable.data = [];
+    this.employeeExpenses.set([]);
+    this.reportCreatedMessage.set('');
+    this.reportCreatedId.set(0);
 
     this.expenseService.getAllById(selection.value).subscribe({
       next: (payload: Expense[]) => this.employeeExpenses.set(payload),
@@ -92,7 +94,7 @@ export class ReportGenerator implements OnInit {
     if (expense) {
       // Create a new array reference to trigger MatTableDataSource update
       this.reportTable.data = [...this.reportTable.data, expense];
-      this.reportForm.get('expenseId')?.setValue(0); // Unselect the added expense
+      this.reportForm.get('expenseId')?.setValue(0);
     }
   }
 
@@ -101,7 +103,7 @@ export class ReportGenerator implements OnInit {
     this.reportTable.data = this.reportTable.data.filter(expense => expense.id !== this.selectedExpenseId());
     // Assigning filtered array back triggers re-render
     this.reportTable.data = this.reportTable.data;
-    this.reportForm.get('expenseId')?.setValue(0); // Unselect the removed expense
+    this.reportForm.get('expenseId')?.setValue(0);
   }
 
   // Method called in HTML: (click)="saveReport()"
@@ -129,8 +131,14 @@ export class ReportGenerator implements OnInit {
         this.employeeExpenses.set([]);
 
         this.reportCreatedMessage.set(`Report #${payload.id} created at ${payload.date}`);
+        this.reportCreatedId.set(payload.id);
       },
       error: e => console.log(e)
     });
+  }
+
+  // Method called in HTML: (click)="viewPDF()"
+  viewPDF(): void {
+    window.open(`${this.reportService.apiURL()}/reports/pdf/${this.reportCreatedId()}`);
   }
 }
